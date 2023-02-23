@@ -3,7 +3,7 @@ package microservices.book.multiplication.domain;
 import lombok.Data;
 
 @Data
-public class Multiplication {
+public final class Multiplication {
     private int factorA;
     private int factorB;
     private int result;
