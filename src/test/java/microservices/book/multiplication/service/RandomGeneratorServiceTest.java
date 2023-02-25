@@ -2,7 +2,6 @@ package microservices.book.multiplication.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +33,7 @@ class RandomGeneratorServiceTest {
     boolean assertThatAllElementsAreBetweenElevenAndOneHundred =
         IntStream.range(0, 1000)
           .map(i -> randomGeneratorService.generateRandomFactor())
-          .allMatch((IntPredicate) isBetweenElevenAndOneHundred);
+          .allMatch(i -> isBetweenElevenAndOneHundred.test(i));
 
     assertTrue(assertThatAllElementsAreBetweenElevenAndOneHundred);
   }
