@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 import microservices.book.multiplication.domain.Multiplication;
+import microservices.book.multiplication.domain.MultiplicationResultAttempt;
+import microservices.book.multiplication.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -20,7 +22,7 @@ class MultiplicationServiceTest {
   //int rand;
   Multiplication multiplication;
 
-  @Mock
+  @MockBean
   private RandomGeneratorService randomGeneratorService;
 
   private MultiplicationService multiplicationService;
@@ -47,5 +49,21 @@ class MultiplicationServiceTest {
         () -> assertEquals(factorB, multiplication.getFactorB()),
         () -> assertEquals(result, multiplication.getResult())
     );
+  }
+
+  @ParameterizedTest
+  @DisplayName("Then assert that checkAttempt return true or false when..")
+  @CsvSource({
+      "50,60,3000,true",
+      "50,60,3100,false"
+  })
+  void checkAttemptTest(int factorA, int factorB, int result, boolean expected) {
+    Multiplication multi = new Multiplication(factorA, factorB);
+    User testUser = new User("john");
+    MultiplicationResultAttempt multiAttempt = new MultiplicationResultAttempt(testUser, multi,
+        result);
+    boolean checkAttempt = multiplicationService.checkAttempt(multiAttempt);
+
+    assertEquals(expected, checkAttempt);
   }
 }
