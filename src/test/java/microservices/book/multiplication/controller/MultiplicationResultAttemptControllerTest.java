@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import microservices.book.multiplication.controller.MultiplicationResultAttemptController.ResultResponse;
+import microservices.book.multiplication.controller.MultiplicationResultAttemptController.MultiplicationResultAttemptResponse;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
@@ -38,7 +38,7 @@ class MultiplicationResultAttemptControllerTest {
   private MockMvc mvc;
 
   private JacksonTester<MultiplicationResultAttempt> jsonResult;
-  private JacksonTester<ResultResponse> jsonResponse;
+  private JacksonTester<MultiplicationResultAttemptResponse> jsonResponse;
 
   @BeforeEach
   public void setup() {
@@ -59,7 +59,8 @@ class MultiplicationResultAttemptControllerTest {
     Multiplication multi = new Multiplication(factorA, factorB);
     MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(testUser, multi,
         attemptResult);
-    ResultResponse expectedResult = new ResultResponse(correct);
+    MultiplicationResultAttemptResponse expectedResult = new MultiplicationResultAttemptResponse(
+        correct);
 
     given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class))).willReturn(
         correct);
