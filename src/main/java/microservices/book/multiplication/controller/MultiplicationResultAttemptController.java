@@ -18,16 +18,9 @@ public class MultiplicationResultAttemptController {
   @Autowired
   private final MultiplicationService multiplicationService;
 
-  protected record MultiplicationResultAttemptResponse(boolean correct) {
-
-  }
-
   @PostMapping
-  ResponseEntity<MultiplicationResultAttemptResponse> postResults(
+  ResponseEntity<MultiplicationResultAttempt> postResults(
       @RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
-    return ResponseEntity.ok(
-        new MultiplicationResultAttemptResponse(
-            multiplicationService.checkAttempt(multiplicationResultAttempt))
-    );
+    return ResponseEntity.ok(multiplicationService.checkAttempt(multiplicationResultAttempt));
   }
 }

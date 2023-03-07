@@ -2,6 +2,7 @@ package microservices.book.multiplication.service;
 
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
+import microservices.book.multiplication.exception.ResultAttemptReceivedTrueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,19 @@ public class MultiplicationServiceImpl implements MultiplicationService {
   }
 
   @Override
-  public boolean checkAttempt(MultiplicationResultAttempt resultAttempt) {
-    return resultAttempt.getMultiplication().getResult() == resultAttempt.getResultAttempt();
+  public MultiplicationResultAttempt checkAttempt(MultiplicationResultAttempt resultAttempt)
+      throws ResultAttemptReceivedTrueException {
+    boolean correct =
+        resultAttempt.getMultiplication().getResult() == resultAttempt.getResultAttempt();
+
+    if (resultAttempt.isCorrect()) {
+      throw new ResultAttemptReceivedTrueException();
+    }
+
+    return new MultiplicationResultAttempt(
+        resultAttempt.getUser(),
+        resultAttempt.getMultiplication(),
+        resultAttempt.getResultAttempt(),
+        correct);
   }
 }

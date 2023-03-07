@@ -61,9 +61,9 @@ class MultiplicationServiceTest {
     Multiplication multi = new Multiplication(factorA, factorB);
     User testUser = new User("john");
     MultiplicationResultAttempt multiAttempt = new MultiplicationResultAttempt(testUser, multi,
-        result);
-    boolean checkAttempt = multiplicationService.checkAttempt(multiAttempt);
+        result, false);
+    MultiplicationResultAttempt checkAttempt = multiplicationService.checkAttempt(multiAttempt);
 
-    assertEquals(expected, checkAttempt);
+    assertEquals(expected, checkAttempt.isCorrect());
   }
 }

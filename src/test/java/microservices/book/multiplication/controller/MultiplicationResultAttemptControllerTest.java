@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import microservices.book.multiplication.controller.MultiplicationResultAttemptController.MultiplicationResultAttemptResponse;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
@@ -38,7 +37,7 @@ class MultiplicationResultAttemptControllerTest {
   private MockMvc mvc;
 
   private JacksonTester<MultiplicationResultAttempt> jsonResult;
-  private JacksonTester<MultiplicationResultAttemptResponse> jsonResponse;
+  private JacksonTester<MultiplicationResultAttempt> jsonResponse;
 
   @BeforeEach
   public void setup() {
@@ -58,12 +57,12 @@ class MultiplicationResultAttemptControllerTest {
     User testUser = new User("john");
     Multiplication multi = new Multiplication(factorA, factorB);
     MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(testUser, multi,
-        attemptResult);
-    MultiplicationResultAttemptResponse expectedResult = new MultiplicationResultAttemptResponse(
-        correct);
+        attemptResult, false);
+    MultiplicationResultAttempt resultAttemptExpected = new MultiplicationResultAttempt(testUser, multi,
+        attemptResult, correct);
 
     given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class))).willReturn(
-        correct);
+        resultAttemptExpected);
 
     MockHttpServletResponse response = mvc.perform(
             post("/results")
@@ -72,6 +71,6 @@ class MultiplicationResultAttemptControllerTest {
         .andExpect(status().isOk())
         .andReturn().getResponse();
 
-    assertEquals(jsonResponse.write(expectedResult).getJson(), response.getContentAsString());
+    assertEquals(jsonResponse.write(resultAttemptExpected).getJson(), response.getContentAsString());
   }
 }
