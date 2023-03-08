@@ -1,8 +1,8 @@
-package microservices.book.multiplication.controller;
+package microservices.book.multiplication.controllers;
 
 import lombok.RequiredArgsConstructor;
 import microservices.book.multiplication.domain.Multiplication;
-import microservices.book.multiplication.service.MultiplicationService;
+import microservices.book.multiplication.services.MultiplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

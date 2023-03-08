@@ -1,4 +1,4 @@
-package microservices.book.multiplication.service;
+package microservices.book.multiplication.services;
 
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;

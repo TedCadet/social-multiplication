@@ -1,4 +1,4 @@
-package microservices.book.multiplication.service;
+package microservices.book.multiplication.services;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +19,7 @@ class RandomGeneratorServiceTest {
 
   @BeforeEach
   @DisplayName("Setting up before the tests")
-  void setUp(){
+  void setUp() {
     randomGeneratorService = new RandomGeneratorServiceImpl();
   }
 
@@ -32,8 +32,8 @@ class RandomGeneratorServiceTest {
      */
     boolean assertThatAllElementsAreBetweenElevenAndOneHundred =
         IntStream.range(0, 1000)
-          .map(i -> randomGeneratorService.generateRandomFactor())
-          .allMatch(i -> isBetweenElevenAndOneHundred.test(i));
+            .map(i -> randomGeneratorService.generateRandomFactor())
+            .allMatch(i -> isBetweenElevenAndOneHundred.test(i));
 
     assertTrue(assertThatAllElementsAreBetweenElevenAndOneHundred);
   }

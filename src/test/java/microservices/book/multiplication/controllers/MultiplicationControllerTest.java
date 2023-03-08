@@ -1,4 +1,4 @@
-package microservices.book.multiplication.controller;
+package microservices.book.multiplication.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import microservices.book.multiplication.domain.Multiplication;
-import microservices.book.multiplication.service.MultiplicationService;
+import microservices.book.multiplication.services.MultiplicationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

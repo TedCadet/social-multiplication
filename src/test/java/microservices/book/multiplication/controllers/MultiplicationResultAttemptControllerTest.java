@@ -1,4 +1,4 @@
-package microservices.book.multiplication.controller;
+package microservices.book.multiplication.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
-import microservices.book.multiplication.service.MultiplicationService;
+import microservices.book.multiplication.services.MultiplicationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +58,8 @@ class MultiplicationResultAttemptControllerTest {
     Multiplication multi = new Multiplication(factorA, factorB);
     MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(testUser, multi,
         attemptResult, false);
-    MultiplicationResultAttempt resultAttemptExpected = new MultiplicationResultAttempt(testUser, multi,
+    MultiplicationResultAttempt resultAttemptExpected = new MultiplicationResultAttempt(testUser,
+        multi,
         attemptResult, correct);
 
     given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class))).willReturn(
@@ -71,6 +72,7 @@ class MultiplicationResultAttemptControllerTest {
         .andExpect(status().isOk())
         .andReturn().getResponse();
 
-    assertEquals(jsonResponse.write(resultAttemptExpected).getJson(), response.getContentAsString());
+    assertEquals(jsonResponse.write(resultAttemptExpected).getJson(),
+        response.getContentAsString());
   }
 }
