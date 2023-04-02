@@ -1,13 +1,8 @@
 package microservices.book.multiplication.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true)
-public final class User {
+@Document
+public record User(String id, String alias) {
 
-  private final String alias;
 }

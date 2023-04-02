@@ -1,21 +1,11 @@
 package microservices.book.multiplication.domain;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@RequiredArgsConstructor
-public final class MultiplicationResultAttempt {
+//@Data
+//@RequiredArgsConstructor
+@Document
+public record MultiplicationResultAttempt(String id, User user, Multiplication multiplication,
+                                          int resultAttempt, boolean correct) {
 
-  private final User user;
-  private final Multiplication multiplication;
-  private final int resultAttempt;
-  private final boolean correct;
-
-  MultiplicationResultAttempt() {
-    user = null;
-    multiplication = null;
-    resultAttempt = -1;
-    correct = false;
-  }
 }
