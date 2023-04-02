@@ -54,11 +54,12 @@ class MultiplicationResultAttemptControllerTest {
     int factorA = 50;
     int factorB = 70;
     int attemptResult = 3500;
-    User testUser = new User("john");
+    User testUser = new User("id", "john");
     Multiplication multi = new Multiplication(factorA, factorB);
-    MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(testUser, multi,
+    MultiplicationResultAttempt attempt = new MultiplicationResultAttempt("id", testUser, multi,
         attemptResult, false);
-    MultiplicationResultAttempt resultAttemptExpected = new MultiplicationResultAttempt(testUser,
+    MultiplicationResultAttempt resultAttemptExpected = new MultiplicationResultAttempt("id",
+        testUser,
         multi,
         attemptResult, correct);
 

@@ -2,11 +2,17 @@ package microservices.book.multiplication.services;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
+import java.util.Optional;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.repositories.MultiplicationRepository;
+import microservices.book.multiplication.repositories.MultiplicationResultAttemptRepository;
+import microservices.book.multiplication.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,18 +25,24 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DisplayName("Given a multiplication service")
 class MultiplicationServiceTest {
 
-  //int rand;
-  Multiplication multiplication;
-
   @MockBean
   private RandomGeneratorService randomGeneratorService;
+  @MockBean
+  private MultiplicationResultAttemptRepository multiplicationResultAttemptRepository;
+  @MockBean
+  private UserRepository userRepository;
+  @MockBean
+  MultiplicationRepository multiplicationRepository;
 
   private MultiplicationService multiplicationService;
+
+  private Multiplication multiplication;
 
   @BeforeEach
   @DisplayName("Setting up before the tests")
   public void setUp() {
-    multiplicationService = new MultiplicationServiceImpl(randomGeneratorService);
+    multiplicationService = new MultiplicationServiceImpl(randomGeneratorService,
+        multiplicationResultAttemptRepository, userRepository, multiplicationRepository);
 
   }
 
@@ -59,11 +71,15 @@ class MultiplicationServiceTest {
   })
   void checkAttemptTest(int factorA, int factorB, int result, boolean expected) {
     Multiplication multi = new Multiplication(factorA, factorB);
-    User testUser = new User("john");
-    MultiplicationResultAttempt multiAttempt = new MultiplicationResultAttempt(testUser, multi,
+    User testUser = new User("id", "john");
+    MultiplicationResultAttempt multiAttempt = new MultiplicationResultAttempt("id", testUser,
+        multi,
         result, false);
+
+    given(userRepository.findByAlias(anyString())).willReturn(Optional.empty());
     MultiplicationResultAttempt checkAttempt = multiplicationService.checkAttempt(multiAttempt);
 
-    assertEquals(expected, checkAttempt.isCorrect());
+    assertEquals(expected, checkAttempt.correct());
+    verify(multiplicationResultAttemptRepository).save(multiAttempt);
   }
 }
