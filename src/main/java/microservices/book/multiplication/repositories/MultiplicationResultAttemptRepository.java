@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface MultiplicationResultAttemptRepository extends
     MongoRepository<MultiplicationResultAttempt, String> {
 
-  List<MultiplicationResultAttempt> findTopByUserAliasOrderByIdDesc(String userAlias);
+  List<MultiplicationResultAttempt> findTop5ByUserAliasOrderByIdDesc(String userAlias);
 }
 

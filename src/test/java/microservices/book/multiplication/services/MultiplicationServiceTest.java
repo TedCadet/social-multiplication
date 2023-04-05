@@ -101,7 +101,7 @@ class MultiplicationServiceTest {
         multiplication, 3051, false);
     List<MultiplicationResultAttempt> latestsAttempts = List.of(attempt1, attempt2);
 
-    given(multiplicationResultAttemptRepository.findTopByUserAliasOrderByIdDesc(anyString()))
+    given(multiplicationResultAttemptRepository.findTop5ByUserAliasOrderByIdDesc(anyString()))
         .willReturn(latestsAttempts);
 
     List<MultiplicationResultAttempt> latestAttemptsResult = multiplicationService
