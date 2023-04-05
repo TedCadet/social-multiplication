@@ -1,5 +1,6 @@
 package microservices.book.multiplication.services;
 
+import java.util.List;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 
@@ -18,4 +19,10 @@ public interface MultiplicationService {
    * info.
    */
   MultiplicationResultAttempt checkAttempt(final MultiplicationResultAttempt resultAttempt);
+
+  /**
+   * @param alias alias of the user
+   * @return a list of the last 5 attempt of the user
+   */
+  List<MultiplicationResultAttempt> getStatsForUser(String alias);
 }

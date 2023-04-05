@@ -1,5 +1,6 @@
 package microservices.book.multiplication.services;
 
+import java.util.List;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
@@ -60,5 +61,10 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     multiplicationResultAttemptRepository.save(multiplicationResultAttempt);
 
     return multiplicationResultAttempt;
+  }
+
+  @Override
+  public List<MultiplicationResultAttempt> getStatsForUser(String alias) {
+    return multiplicationResultAttemptRepository.findTopByUserAliasOrderByIdDesc(alias);
   }
 }
