@@ -8,3 +8,9 @@ spring:
       port: 27017
       host: localhost
       auto-index-creation: true
+  kafka:
+    bootstrap-servers: locahost:9092
+
+kafka:
+  topics:
+    multiplicationSolved: multiplications-events

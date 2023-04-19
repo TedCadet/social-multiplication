@@ -10,9 +10,11 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
+import microservices.book.multiplication.dispatchers.MultiplicationSolvedEventDispatcher;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.events.MultiplicationSolvedEvent;
 import microservices.book.multiplication.repositories.MultiplicationRepository;
 import microservices.book.multiplication.repositories.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repositories.UserRepository;
@@ -37,6 +39,8 @@ class MultiplicationServiceTest {
   private UserRepository userRepository;
   @MockBean
   MultiplicationRepository multiplicationRepository;
+  @MockBean
+  MultiplicationSolvedEventDispatcher multiplicationSolvedEventDispatcher;
 
   private MultiplicationService multiplicationService;
 
@@ -46,7 +50,8 @@ class MultiplicationServiceTest {
   @DisplayName("Setting up before the tests")
   public void setUp() {
     multiplicationService = new MultiplicationServiceImpl(randomGeneratorService,
-        multiplicationResultAttemptRepository, userRepository, multiplicationRepository);
+        multiplicationResultAttemptRepository, userRepository, multiplicationRepository,
+        multiplicationSolvedEventDispatcher);
 
   }
 
@@ -86,8 +91,13 @@ class MultiplicationServiceTest {
     given(userRepository.findByAlias(anyString())).willReturn(Optional.empty());
     MultiplicationResultAttempt checkAttempt = multiplicationService.checkAttempt(multiAttempt);
 
+    MultiplicationSolvedEvent multiplicationSolvedEvent = new MultiplicationSolvedEvent(
+        checkAttempt.id(),
+        testUser.id(), checkAttempt.correct());
+
     assertEquals(expected, checkAttempt.correct());
-    verify(multiplicationResultAttemptRepository).save(multiAttempt);
+    verify(multiplicationResultAttemptRepository).save(checkAttempt);
+    verify(multiplicationSolvedEventDispatcher).send(multiplicationSolvedEvent);
   }
 
   @Test

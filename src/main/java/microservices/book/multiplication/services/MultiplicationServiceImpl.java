@@ -1,9 +1,11 @@
 package microservices.book.multiplication.services;
 
 import java.util.List;
+import microservices.book.multiplication.dispatchers.MultiplicationSolvedEventDispatcher;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.events.MultiplicationSolvedEvent;
 import microservices.book.multiplication.exception.ResultAttemptReceivedTrueException;
 import microservices.book.multiplication.repositories.MultiplicationRepository;
 import microservices.book.multiplication.repositories.MultiplicationResultAttemptRepository;
@@ -18,15 +20,18 @@ public class MultiplicationServiceImpl implements MultiplicationService {
   private final MultiplicationResultAttemptRepository multiplicationResultAttemptRepository;
   private final UserRepository userRepository;
   private final MultiplicationRepository multiplicationRepository;
+  private final MultiplicationSolvedEventDispatcher multiplicationSolvedEventDispatcher;
 
   @Autowired
   public MultiplicationServiceImpl(RandomGeneratorService randomGeneratorService,
       MultiplicationResultAttemptRepository multiplicationResultAttemptRepository,
-      UserRepository userRepository, MultiplicationRepository multiplicationRepository) {
+      UserRepository userRepository, MultiplicationRepository multiplicationRepository,
+      MultiplicationSolvedEventDispatcher multiplicationSolvedEventDispatcher) {
     this.randomGeneratorService = randomGeneratorService;
     this.multiplicationResultAttemptRepository = multiplicationResultAttemptRepository;
     this.userRepository = userRepository;
     this.multiplicationRepository = multiplicationRepository;
+    this.multiplicationSolvedEventDispatcher = multiplicationSolvedEventDispatcher;
   }
 
   @Override
@@ -60,6 +65,10 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
     multiplicationResultAttemptRepository.save(multiplicationResultAttempt);
 
+    MultiplicationSolvedEvent multiplicationSolvedEvent = new MultiplicationSolvedEvent(
+        multiplicationResultAttempt.id(), user.id(), correct);
+    multiplicationSolvedEventDispatcher.send(multiplicationSolvedEvent);
+    
     return multiplicationResultAttempt;
   }
 
