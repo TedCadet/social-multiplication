@@ -15,6 +15,9 @@ public class KafkaTopicConfig {
   @Value(value = "${spring.kafka.bootstrap-servers}")
   private String bootstrapAddress;
 
+  @Value(value = "${kafka.topics.multiplicationSolved}")
+  private String topic;
+
   @Bean
   public KafkaAdmin kafkaAdmin() {
     Map<String, Object> configs = new HashMap<>();
@@ -24,6 +27,6 @@ public class KafkaTopicConfig {
 
   @Bean
   public NewTopic topic1() {
-    return new NewTopic("multiplications-events", 1, (short) 1);
+    return new NewTopic(topic, 1, (short) 1);
   }
 }
