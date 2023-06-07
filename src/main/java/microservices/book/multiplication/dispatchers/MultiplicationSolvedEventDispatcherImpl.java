@@ -2,6 +2,7 @@ package microservices.book.multiplication.dispatchers;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import microservices.book.multiplication.events.MultiplicationSolvedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,13 @@ public class MultiplicationSolvedEventDispatcherImpl implements
     CompletableFuture
         .runAsync(() -> kafkaTemplate.send(topic, multiplicationSolvedEvent))
         .thenAccept(logSendResult)
-        .exceptionally(ex -> {
-          log.error("error while sending a MultiplicationSolvedEvent to kafka: ", ex);
-          return null;
-        });
+        .exceptionally(handleException);
   }
 
   Consumer<Void> logSendResult = res -> log.info("MultiplicationSolvedEvent sent");
+
+  Function<Throwable, Void> handleException = ex -> {
+    log.error("error while sending a MultiplicationSolvedEvent to kafka: ", ex);
+    return null;
+  };
 }
