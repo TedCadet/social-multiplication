@@ -35,9 +35,10 @@ public class MultiplicationSolvedEventDispatcherImpl implements
         .exceptionally(handleException);
   }
 
-  Consumer<Void> logSendResult = res -> log.info("MultiplicationSolvedEvent sent");
+  private final Consumer<Void> logSendResult = res -> log.info(
+      "MultiplicationSolvedEvent sent");
 
-  Function<Throwable, Void> handleException = ex -> {
+  private final Function<Throwable, Void> handleException = ex -> {
     log.error("error while sending a MultiplicationSolvedEvent to kafka: ", ex);
     return null;
   };
